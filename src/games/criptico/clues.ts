@@ -1,0 +1,23 @@
+// Pistas crípticas de anagrama: la pista contiene las letras mezcladas + una definición.
+export const CRIPTICOS: { answer: string; clue: string }[] = [
+  { answer: "ROMA", clue: "Ciudad eterna, si desordenás AMOR" },
+  { answer: "SOPA", clue: "Plato caliente que sale de mezclar PAOS" },
+  { answer: "PERA", clue: "Fruta que se obtiene al reordenar REPA" },
+  { answer: "LIMA", clue: "Capital sudamericana, anagrama de MALI" },
+  { answer: "MESA", clue: "Mueble donde se come, mezcla de SAME" },
+  { answer: "CAMA", clue: "Donde se duerme, reordená MACA" },
+  { answer: "PLATO", clue: "Sirve para servir la comida, desordená POLTA" },
+  { answer: "MARTES", clue: "Día de la semana escondido en TERMAS" },
+  { answer: "CANTAR", clue: "Lo que hace un cantante, anagrama de TRANCA" },
+  { answer: "VERANO", clue: "Estación calurosa, mezclá AVENOR" },
+  { answer: "PIANO", clue: "Instrumento de teclas, desordená PAINO" },
+  { answer: "GATO", clue: "Felino doméstico, anagrama de TOGA" },
+  { answer: "NARANJA", clue: "Fruta cítrica, mezclá ARANJAN" },
+  { answer: "CAFE", clue: "Bebida que despierta, reordená FACE" },
+  { answer: "LUNA", clue: "Satélite natural de la Tierra, anagrama de ULNA" },
+  { answer: "RIO", clue: "Corriente de agua, desordená ORI" },
+  { answer: "DEDO", clue: "Parte de la mano, mezclá DODE" },
+  { answer: "SILLA", clue: "Asiento con respaldo, anagrama de LASIL" },
+  { answer: "FLOR", clue: "Perfumada y colorida, reordená FROL" },
+  { answer: "LAGO", clue: "Agua rodeada de tierra, anagrama de GOAL" },
+];
