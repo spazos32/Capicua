@@ -156,7 +156,7 @@ export default function Crucigrama({ dateKey, onFinish }: GameProps) {
 
   const list = (d: Dir, title: string) => (
     <div>
-      <h3 className="mb-1 text-sm font-black uppercase tracking-wide text-slate-500">
+      <h3 className="mb-1 text-sm font-black uppercase tracking-wide text-slate-600">
         {title}
       </h3>
       <ul className="space-y-1">
@@ -168,7 +168,7 @@ export default function Crucigrama({ dateKey, onFinish }: GameProps) {
                 onClick={() => selectEntry(e)}
                 className={`w-full rounded-lg px-2 py-1 text-left text-sm ${
                   active === e ? "bg-indigo-100 font-semibold" : "hover:bg-white"
-                } ${entryDone(e) ? "text-slate-400 line-through" : "text-slate-800"}`}
+                } ${entryDone(e) ? "text-slate-600 line-through" : "text-slate-800"}`}
               >
                 <b className="mr-1 text-indigo-600">{e.number}.</b>
                 {e.clue} <span className="text-slate-400">({e.answer.length})</span>
@@ -195,7 +195,7 @@ export default function Crucigrama({ dateKey, onFinish }: GameProps) {
       </div>
 
       <div
-        className="mx-auto grid w-full max-w-xl overflow-hidden rounded-lg border-2 border-slate-800 bg-slate-800 shadow-lg"
+        data-board="" className="mx-auto grid w-full max-w-xl overflow-hidden rounded-lg border-2 border-slate-800 bg-slate-800 shadow-lg"
         style={{ gridTemplateColumns: `repeat(${size}, minmax(0, 1fr))`, gap: 1 }}
       >
         {solution.map((s, i) => {
@@ -215,7 +215,7 @@ export default function Crucigrama({ dateKey, onFinish }: GameProps) {
               } ${wrong ? "text-rose-600" : "text-slate-900"}`}
             >
               {numbers[i] > 0 && (
-                <span className="absolute left-0.5 top-0 text-[8px] font-semibold leading-tight text-slate-500 sm:text-[10px]">
+                <span className="absolute left-0.5 top-0 text-[8px] font-semibold leading-tight text-slate-600 sm:text-[10px]">
                   {numbers[i]}
                 </span>
               )}
@@ -229,11 +229,11 @@ export default function Crucigrama({ dateKey, onFinish }: GameProps) {
         <button
           onClick={check}
           disabled={done}
-          className="rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow ring-1 ring-slate-200 hover:bg-slate-50"
+          className="min-h-11 rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow ring-1 ring-slate-200 hover:bg-slate-50"
         >
           Revisar errores (−10 pts)
         </button>
-        <span className="self-center text-xs text-slate-500">Revisiones: {checks}</span>
+        <span className="self-center text-xs text-slate-600">Revisiones: {checks}</span>
       </div>
 
       <Keyboard onKey={type} onBack={back} />

@@ -61,7 +61,7 @@ export default function Sudoku({ dateKey, onFinish }: GameProps) {
       <p className="text-center text-sm text-slate-600">
         Errores: <b className="text-rose-600">{mistakes}</b>
       </p>
-      <div className="mx-auto grid aspect-square w-full max-w-md grid-cols-9 overflow-hidden rounded-xl border-2 border-slate-800 bg-white shadow-lg">
+      <div data-board="" className="mx-auto grid aspect-square w-full max-w-md grid-cols-9 overflow-hidden rounded-xl border-2 border-slate-800 bg-white shadow-lg">
         {values.map((v, i) => {
           const r = Math.floor(i / 9);
           const c = i % 9;

@@ -91,7 +91,7 @@ export default function Timeline({ dateKey, onFinish }: GameProps) {
                     onClick={() => move(pos, -1)}
                     disabled={pos === 0 || locked.includes(pos)}
                     aria-label="Subir"
-                    className="h-9 w-9 rounded-lg bg-slate-100 font-black hover:bg-blue-100"
+                    className="h-11 w-11 rounded-lg bg-slate-100 font-black hover:bg-blue-100"
                   >
                     ↑
                   </button>
@@ -99,7 +99,7 @@ export default function Timeline({ dateKey, onFinish }: GameProps) {
                     onClick={() => move(pos, 1)}
                     disabled={pos === COUNT - 1 || locked.includes(pos)}
                     aria-label="Bajar"
-                    className="h-9 w-9 rounded-lg bg-slate-100 font-black hover:bg-blue-100"
+                    className="h-11 w-11 rounded-lg bg-slate-100 font-black hover:bg-blue-100"
                   >
                     ↓
                   </button>

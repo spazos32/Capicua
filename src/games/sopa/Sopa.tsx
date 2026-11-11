@@ -119,7 +119,7 @@ export default function Sopa({ dateKey, onFinish }: GameProps) {
         Tema: <b>{puzzle.theme}</b> · Tocá la primera y la última letra de cada palabra
       </p>
       <div
-        className="mx-auto grid w-full max-w-md select-none gap-px overflow-hidden rounded-xl border-2 border-slate-800 bg-slate-300 shadow-lg"
+        data-board="" className="mx-auto grid w-full max-w-md select-none gap-px overflow-hidden rounded-xl border-2 border-slate-800 bg-slate-300 shadow-lg"
         style={{ gridTemplateColumns: `repeat(${SIZE}, minmax(0, 1fr))` }}
       >
         {puzzle.grid.map((l, i) => (
@@ -152,7 +152,7 @@ export default function Sopa({ dateKey, onFinish }: GameProps) {
           </li>
         ))}
       </ul>
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs text-slate-600">
         Encontradas {found.length}/{total} · Fallos {wrong}
       </p>
     </div>

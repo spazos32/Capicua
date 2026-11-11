@@ -92,7 +92,7 @@ export default function Nonograma({ dateKey, onFinish }: GameProps) {
           <button
             key={String(m)}
             onClick={() => setMark(m)}
-            className={`rounded-full px-4 py-2 text-sm font-bold shadow ring-1 ${
+            className={`min-h-11 rounded-full px-4 py-2 text-sm font-bold shadow ring-1 ${
               mark === m
                 ? "bg-fuchsia-600 text-white ring-fuchsia-600"
                 : "bg-white text-slate-700 ring-slate-200"
@@ -104,7 +104,7 @@ export default function Nonograma({ dateKey, onFinish }: GameProps) {
       </div>
 
       <div className="mx-auto w-fit overflow-x-auto rounded-xl bg-white p-2 shadow-lg ring-1 ring-slate-200">
-        <table className="border-collapse">
+        <table data-board="" className="border-collapse">
           <thead>
             <tr>
               <th />
@@ -152,7 +152,7 @@ export default function Nonograma({ dateKey, onFinish }: GameProps) {
           </tbody>
         </table>
       </div>
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs text-slate-600">
         Cada número indica cuántas casillas seguidas van pintadas · Correcciones: {fixes}
       </p>
     </div>
