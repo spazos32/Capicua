@@ -1,28 +1,151 @@
 @import "tailwindcss";
 
+/* Tokens semánticos (claymorphism: fondo lavanda, violeta + rosa) */
 :root {
-  --background: #f5f3ff;
-  --foreground: #0f172a;
+  --background: #f4f1fa;
+  --foreground: #1e1b2e;
+  --muted: #4b4560;
+  --accent: #7c3aed;
+  --accent-2: #db2777;
+  --surface: #ffffff;
+  --ring: #7c3aed;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --font-sans: var(--font-nunito);
 }
 
 body {
-  background: linear-gradient(160deg, #eef2ff 0%, #fdf2f8 55%, #fff7ed 100%) fixed;
+  background:
+    radial-gradient(60rem 30rem at 10% -10%, #e9d5ff 0%, transparent 60%),
+    radial-gradient(50rem 30rem at 100% 0%, #fbcfe8 0%, transparent 55%),
+    var(--background);
+  background-attachment: fixed;
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-nunito), system-ui, sans-serif;
+  line-height: 1.5;
   -webkit-tap-highlight-color: transparent;
 }
 
-button {
+/* Interacción */
+button,
+a,
+summary {
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 button:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+button {
+  transition:
+    transform 150ms ease-out,
+    background-color 150ms ease-out,
+    box-shadow 150ms ease-out,
+    opacity 150ms ease-out;
+}
+
+/* Feedback de pulsación (no en las casillas de los tableros, para evitar saltos) */
+button:not(:disabled):active {
+  transform: scale(0.96);
+}
+[data-board] button:not(:disabled):active {
+  transform: none;
+}
+
+/* Foco visible para teclado */
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 0.5rem;
+}
+
+/* Superficies "clay": borde grueso y doble sombra suave */
+.clay {
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  background: var(--surface);
+  box-shadow:
+    0 10px 24px rgba(76, 29, 149, 0.14),
+    inset 0 -5px 10px rgba(76, 29, 149, 0.06),
+    inset 0 5px 10px rgba(255, 255, 255, 0.9);
+}
+
+.clay-color {
+  border: 3px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 12px 24px rgba(76, 29, 149, 0.25),
+    inset 0 -8px 14px rgba(0, 0, 0, 0.18),
+    inset 0 8px 14px rgba(255, 255, 255, 0.28);
+}
+
+/* Animaciones (cortas, con transform/opacity) */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.85);
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes flip {
+  0% {
+    transform: rotateX(90deg);
+    opacity: 0.2;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.animate-rise {
+  animation: rise 320ms ease-out both;
+}
+.animate-pop {
+  animation: pop 200ms ease-out both;
+}
+.animate-flip {
+  animation: flip 350ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  button:not(:disabled):active {
+    transform: none;
+  }
+}
+
+/* Números de ancho fijo para puntajes y cuentas regresivas */
+.tabular {
+  font-variant-numeric: tabular-nums;
 }

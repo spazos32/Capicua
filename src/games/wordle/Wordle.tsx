@@ -31,9 +31,9 @@ function score(guess: string, answer: string): Mark[] {
 }
 
 const CELL: Record<Mark, string> = {
-  correct: "bg-emerald-500 border-emerald-500 text-white",
-  present: "bg-amber-400 border-amber-400 text-white",
-  absent: "bg-slate-400 border-slate-400 text-white",
+  correct: "bg-emerald-700 border-emerald-700 text-white",
+  present: "bg-amber-400 border-amber-400 text-slate-900",
+  absent: "bg-slate-600 border-slate-600 text-white",
 };
 const EMOJI: Record<Mark, string> = { correct: "🟩", present: "🟨", absent: "⬛" };
 
@@ -105,7 +105,19 @@ export default function Wordle({ dateKey, onFinish }: GameProps) {
             {Array.from({ length: 5 }, (_, c) => (
               <div
                 key={c}
-                className={`flex h-14 w-14 items-center justify-center rounded-lg border-2 text-2xl font-black sm:h-16 sm:w-16 ${
+                aria-label={
+                  row.marks
+                    ? `${row.text[c]}: ${{ correct: "bien ubicada", present: "en otro lugar", absent: "no está" }[row.marks[c]]}`
+                    : undefined
+                }
+                style={row.marks ? { animationDelay: `${c * 120}ms` } : undefined}
+                className={`flex h-14 w-14 items-center justify-center rounded-xl border-2 text-2xl font-black sm:h-16 sm:w-16 ${
+                  row.marks
+                    ? "animate-flip"
+                    : row.text[c]
+                      ? "animate-pop"
+                      : ""
+                } ${
                   row.marks
                     ? CELL[row.marks[c]]
                     : row.text[c]

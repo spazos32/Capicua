@@ -130,21 +130,21 @@ export default function Conexiones({ dateKey, onFinish }: GameProps) {
           <div className="flex justify-center gap-2">
             <button
               onClick={shuffleNow}
-              className="rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow ring-1 ring-slate-200"
+              className="min-h-11 rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow ring-1 ring-slate-200"
             >
               Mezclar
             </button>
             <button
               onClick={() => setPicked([])}
               disabled={!picked.length}
-              className="rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow ring-1 ring-slate-200"
+              className="min-h-11 rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow ring-1 ring-slate-200"
             >
               Deseleccionar
             </button>
             <button
               onClick={submit}
               disabled={picked.length !== 4}
-              className="rounded-full bg-teal-600 px-5 py-2 text-sm font-bold text-white shadow"
+              className="min-h-11 rounded-full bg-teal-600 px-5 py-2 text-sm font-bold text-white shadow"
             >
               Enviar
             </button>

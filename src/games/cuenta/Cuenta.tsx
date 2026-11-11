@@ -128,7 +128,7 @@ export default function Cuenta({ dateKey, onFinish }: GameProps) {
   return (
     <div className="space-y-5">
       <div className="mx-auto max-w-xs rounded-2xl bg-white py-4 text-center shadow-lg ring-1 ring-slate-200">
-        <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Objetivo</p>
+        <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">Objetivo</p>
         <p className="text-6xl font-black text-rose-600">{target}</p>
       </div>
 
@@ -172,19 +172,19 @@ export default function Cuenta({ dateKey, onFinish }: GameProps) {
         <button
           onClick={undo}
           disabled={done || !history.length}
-          className="rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow ring-1 ring-slate-200"
+          className="min-h-11 rounded-full bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow ring-1 ring-slate-200"
         >
           ↩ Deshacer
         </button>
         <button
           onClick={() => finish(closest.value)}
           disabled={done}
-          className="rounded-full bg-rose-600 px-4 py-2 text-sm font-bold text-white shadow"
+          className="min-h-11 rounded-full bg-rose-600 px-4 py-2 text-sm font-bold text-white shadow"
         >
           Entregar ({closest.value})
         </button>
       </div>
-      <p className="text-center text-xs text-slate-500">
+      <p className="text-center text-xs text-slate-600">
         Tocá un número, una operación y otro número. Cada número se usa una sola vez.
         Entregá el más cercano al objetivo (−10 pts por cada unidad de diferencia).
       </p>

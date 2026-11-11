@@ -96,7 +96,7 @@ export default function Criptico({ dateKey, onFinish }: GameProps) {
         <>
           <div className="rounded-2xl bg-white p-4 text-center shadow ring-1 ring-slate-200">
             <p className="text-lg font-black text-slate-900">{cur.clue}</p>
-            <p className="mt-1 text-sm text-slate-500">({cur.answer.length} letras)</p>
+            <p className="mt-1 text-sm text-slate-600">({cur.answer.length} letras)</p>
           </div>
           <div className="flex justify-center gap-1.5">
             {Array.from({ length: cur.answer.length }, (_, i) => {

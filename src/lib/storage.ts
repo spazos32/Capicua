@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { todayKey } from "./daily";
+import { secondsToNextDay, todayKey } from "./daily";
 
 export type GameResult = { points: number; share: string };
 
@@ -38,6 +38,18 @@ export function useToday(): string | null {
   return useSyncExternalStore(
     () => () => {},
     todayKey,
+    () => null,
+  );
+}
+
+/** Segundos hasta el próximo cambio de día; null hasta montar en el cliente. */
+export function useCountdown(): number | null {
+  return useSyncExternalStore(
+    (notify) => {
+      const id = setInterval(notify, 1000);
+      return () => clearInterval(id);
+    },
+    secondsToNextDay,
     () => null,
   );
 }

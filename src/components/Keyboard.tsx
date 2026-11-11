@@ -5,9 +5,9 @@ export type KeyState = "correct" | "present" | "absent";
 const ROWS = ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"];
 
 const STATE_CLASS: Record<KeyState, string> = {
-  correct: "bg-emerald-500 text-white",
-  present: "bg-amber-400 text-white",
-  absent: "bg-slate-400 text-white",
+  correct: "bg-emerald-700 text-white",
+  present: "bg-amber-400 text-slate-900",
+  absent: "bg-slate-600 text-white",
 };
 
 export function Keyboard({
