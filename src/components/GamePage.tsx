@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { ArrowLeft, ArrowRight, Check, CircleHelp, Copy, Trophy } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, Check, CircleHelp, Copy, Trophy, X } from "lucide-react";
 import { GAME_BY_ID, GAMES } from "@/games/registry";
 import { GAME_COMPONENTS } from "@/games";
 import { prettyDate } from "@/lib/daily";
@@ -13,14 +13,27 @@ import {
   type GameResult,
 } from "@/lib/storage";
 
-function ResultCard({
+const PRIMARY_BTN =
+  "flex min-h-11 items-center gap-2 rounded-full bg-orange-600 px-5 py-2 text-sm font-black text-white shadow-[0_4px_0_#9a3412] active:translate-y-0.5 active:shadow-[0_2px_0_#9a3412]";
+
+function headline(points: number) {
+  if (points >= 100) return "¡Perfecto!";
+  if (points >= 70) return "¡Muy bien!";
+  if (points >= 40) return "¡Bien jugado!";
+  return "¡Terminaste!";
+}
+
+/** Botones de acción compartidos por la tarjeta y el pop up de resultado. */
+function ResultActions({
   result,
   nextId,
   day,
+  onNavigate,
 }: {
   result: GameResult;
   nextId: string | null;
   day: string;
+  onNavigate?: () => void;
 }) {
   const [copied, setCopied] = useState(false);
   const next = nextId ? GAME_BY_ID[nextId] : null;
@@ -34,10 +47,43 @@ function ResultCard({
     }
   };
   return (
-    <section
-      aria-live="polite"
-      className="clay animate-pop mx-auto mb-5 max-w-md rounded-[28px] p-5 text-center"
-    >
+    <div className="mt-4 flex flex-wrap justify-center gap-2">
+      <button
+        onClick={copy}
+        className="flex min-h-11 items-center gap-2 rounded-full bg-violet-100 px-5 py-2 text-sm font-black text-violet-900 hover:bg-violet-200"
+      >
+        {copied ? (
+          <Check aria-hidden className="h-4 w-4" />
+        ) : (
+          <Copy aria-hidden className="h-4 w-4" />
+        )}
+        {copied ? "¡Copiado!" : "Copiar resultado"}
+      </button>
+      {next ? (
+        <Link href={`/juego/${next.id}`} onClick={onNavigate} className={PRIMARY_BTN}>
+          Siguiente: {next.title}
+          <ArrowRight aria-hidden className="h-4 w-4" />
+        </Link>
+      ) : (
+        <Link href="/" onClick={onNavigate} className={PRIMARY_BTN}>
+          Ver todos los juegos
+        </Link>
+      )}
+    </div>
+  );
+}
+
+function ResultCard({
+  result,
+  nextId,
+  day,
+}: {
+  result: GameResult;
+  nextId: string | null;
+  day: string;
+}) {
+  return (
+    <section className="clay mx-auto mb-5 max-w-md rounded-[28px] p-5 text-center">
       <Trophy aria-hidden className="mx-auto h-8 w-8 text-amber-600" />
       <p className="mt-1 text-sm font-bold text-muted">¡Terminaste por hoy!</p>
       <p className="tabular text-5xl font-black text-accent">
@@ -47,36 +93,72 @@ function ResultCard({
       <pre className="mt-2 whitespace-pre-wrap font-sans text-sm font-semibold text-foreground">
         {result.share}
       </pre>
-      <div className="mt-4 flex flex-wrap justify-center gap-2">
-        <button
-          onClick={copy}
-          className="flex min-h-11 items-center gap-2 rounded-full bg-violet-100 px-5 py-2 text-sm font-black text-violet-900 hover:bg-violet-200"
-        >
-          {copied ? (
-            <Check aria-hidden className="h-4 w-4" />
-          ) : (
-            <Copy aria-hidden className="h-4 w-4" />
-          )}
-          {copied ? "¡Copiado!" : "Copiar resultado"}
-        </button>
-        {next ? (
-          <Link
-            href={`/juego/${next.id}`}
-            className="flex min-h-11 items-center gap-2 rounded-full bg-orange-600 px-5 py-2 text-sm font-black text-white shadow-[0_4px_0_#9a3412] active:translate-y-0.5 active:shadow-[0_2px_0_#9a3412]"
-          >
-            Siguiente: {next.title}
-            <ArrowRight aria-hidden className="h-4 w-4" />
-          </Link>
-        ) : (
-          <Link
-            href="/"
-            className="flex min-h-11 items-center gap-2 rounded-full bg-orange-600 px-5 py-2 text-sm font-black text-white shadow-[0_4px_0_#9a3412] active:translate-y-0.5 active:shadow-[0_2px_0_#9a3412]"
-          >
-            Ver todos los juegos
-          </Link>
-        )}
-      </div>
+      <ResultActions result={result} nextId={nextId} day={day} />
     </section>
+  );
+}
+
+/** Pop up que aparece al terminar un juego (usa <dialog>: foco atrapado y Esc para cerrar). */
+function ResultDialog({
+  title,
+  result,
+  nextId,
+  day,
+  onClose,
+}: {
+  title: string;
+  result: GameResult;
+  nextId: string | null;
+  day: string;
+  onClose: () => void;
+}) {
+  const ref = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const d = ref.current;
+    if (d && !d.open) d.showModal();
+  }, []);
+  const close = () => ref.current?.close();
+
+  return (
+    <dialog
+      ref={ref}
+      onClose={onClose}
+      onClick={(e) => {
+        if (e.target === ref.current) close();
+      }}
+      aria-labelledby="result-title"
+      className="clay animate-pop m-auto w-[calc(100%-2rem)] max-w-sm rounded-[28px] p-6 text-center text-foreground backdrop:bg-black/50"
+    >
+      <button
+        onClick={close}
+        aria-label="Cerrar"
+        className="absolute right-3 top-3 flex h-11 w-11 items-center justify-center rounded-full text-muted hover:bg-violet-50"
+      >
+        <X aria-hidden className="h-5 w-5" strokeWidth={2.5} />
+      </button>
+      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-amber-100">
+        <Trophy aria-hidden className="h-9 w-9 text-amber-600" />
+      </div>
+      <h2 id="result-title" className="mt-2 text-2xl font-black">
+        {headline(result.points)}
+      </h2>
+      <p className="text-sm font-bold text-muted">{title} completado</p>
+      <p className="tabular mt-1 text-6xl font-black text-accent" aria-live="polite">
+        {result.points}
+        <span className="text-xl font-bold text-muted"> / 100</span>
+      </p>
+      <p className="text-sm font-bold text-muted">puntos</p>
+      <pre className="mt-3 whitespace-pre-wrap rounded-2xl bg-violet-50 p-3 font-sans text-sm font-semibold">
+        {result.share}
+      </pre>
+      <ResultActions result={result} nextId={nextId} day={day} onNavigate={close} />
+      <button
+        onClick={close}
+        className="mt-2 min-h-11 rounded-full px-5 text-sm font-bold text-muted hover:bg-violet-50"
+      >
+        Revisar mi juego
+      </button>
+    </dialog>
   );
 }
 
@@ -85,6 +167,7 @@ export default function GamePage({ id }: { id: string }) {
   const day = useToday();
   const Game = GAME_COMPONENTS[id];
   const [, refresh] = useState(0);
+  const [showDialog, setShowDialog] = useState(false);
   // `day` es null hasta montar en el cliente, así que leer localStorage acá es seguro
   const result = day ? readResult(day, id) : null;
   const nextId =
@@ -94,6 +177,7 @@ export default function GamePage({ id }: { id: string }) {
     if (!day || readResult(day, id)) return;
     saveResult(day, id, r);
     refresh((n) => n + 1);
+    setShowDialog(true);
   };
 
   if (!meta || !Game) {
@@ -139,6 +223,16 @@ export default function GamePage({ id }: { id: string }) {
         <p className="p-8 text-center font-semibold text-muted" role="status">
           Cargando…
         </p>
+      )}
+
+      {showDialog && result && day && (
+        <ResultDialog
+          title={meta.title}
+          result={result}
+          nextId={nextId || null}
+          day={day}
+          onClose={() => setShowDialog(false)}
+        />
       )}
     </main>
   );

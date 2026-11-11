@@ -99,16 +99,25 @@ export default function Sudoku({ dateKey, onFinish }: GameProps) {
         })}
       </div>
       <div className="mx-auto grid max-w-md grid-cols-5 gap-2 sm:grid-cols-10">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => (
-          <button
-            key={n}
-            onClick={() => enter(n)}
-            disabled={done}
-            className="h-12 rounded-lg bg-white text-xl font-black text-slate-800 shadow ring-1 ring-slate-200 hover:bg-indigo-50 active:scale-95"
-          >
-            {n}
-          </button>
-        ))}
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => {
+          // el número se grisa cuando ya están sus 9 lugares bien colocados
+          const complete = values.filter((v, i) => v === n && solution[i] === n).length === 9;
+          return (
+            <button
+              key={n}
+              onClick={() => enter(n)}
+              disabled={done || complete}
+              aria-label={complete ? `${n}, completo` : String(n)}
+              className={`h-12 rounded-lg text-xl font-black ring-1 active:scale-95 disabled:opacity-100 ${
+                complete
+                  ? "bg-slate-200 text-slate-500 ring-slate-300"
+                  : "bg-white text-slate-800 shadow ring-slate-200 hover:bg-indigo-50"
+              }`}
+            >
+              {n}
+            </button>
+          );
+        })}
         <button
           onClick={() => enter(0)}
           disabled={done}
